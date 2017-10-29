@@ -314,7 +314,7 @@ qjackctlMainForm *qjackctlMainForm::g_pMainForm = NULL;
 // Constructor.
 qjackctlMainForm::qjackctlMainForm (
 	QWidget *pParent, Qt::WindowFlags wflags )
-	: QWidget(pParent, wflags)
+	: QMainWindow(pParent, wflags)
 {
 #if defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
 	QApplication::setStyle(new QPlastiqueStyle());
@@ -518,7 +518,7 @@ qjackctlMainForm *qjackctlMainForm::getInstance (void)
 	return g_pMainForm;
 }
 
-
+#include <QDockWidget>
 // Make and set a proper setup step.
 bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 {
@@ -543,11 +543,36 @@ bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 		pParent = this;
 		wflags |= Qt::Tool;
 	}
+
+	setCentralWidget(0);
+
 	// All forms are to be created right now.
 	m_pMessagesStatusForm = new qjackctlMessagesStatusForm (pParent, wflags);
+	m_pMessagesStatusFormDock = new QDockWidget(this);
+	m_pMessagesStatusFormDock->setWidget(m_pMessagesStatusForm);
+	m_pMessagesStatusFormDock->setWindowTitle(m_pMessagesStatusForm->windowTitle());
+	addDockWidget(Qt::BottomDockWidgetArea, m_pMessagesStatusFormDock);
+
 	m_pSessionForm        = new qjackctlSessionForm        (pParent, wflags);
+	m_pSessionFormDock = new QDockWidget(this);
+	m_pSessionFormDock->setWidget(m_pSessionForm);
+	m_pSessionFormDock->setWindowTitle(m_pSessionForm->windowTitle());
+	//addDockWidget(Qt::BottomDockWidgetArea, m_pSessionFormDock);
+	tabifyDockWidget(m_pMessagesStatusFormDock, m_pSessionFormDock);
+
 	m_pConnectionsForm    = new qjackctlConnectionsForm    (pParent, wflags);
+	m_pConnectionsFormDock = new QDockWidget(this);
+	m_pConnectionsFormDock->setWidget(m_pConnectionsForm);
+	m_pConnectionsFormDock->setWindowTitle(m_pConnectionsForm->windowTitle());
+	//addDockWidget(Qt::BottomDockWidgetArea, m_pConnectionsFormDock);
+	tabifyDockWidget(m_pMessagesStatusFormDock, m_pConnectionsFormDock);
+
 	m_pPatchbayForm       = new qjackctlPatchbayForm       (pParent, wflags);
+	m_pPatchbayFormDock = new QDockWidget(this);
+	m_pPatchbayFormDock->setWidget(m_pPatchbayForm);
+	m_pPatchbayFormDock->setWindowTitle(m_pPatchbayForm->windowTitle());
+	//addDockWidget(Qt::BottomDockWidgetArea, m_pPatchbayFormDock);
+	tabifyDockWidget(m_pMessagesStatusFormDock, m_pPatchbayFormDock);
 
 	// Setup form is kind of special (modeless dialog).
 	m_pSetupForm = new qjackctlSetupForm(this);

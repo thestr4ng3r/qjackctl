@@ -26,6 +26,8 @@
 
 #include "qjackctlSetup.h"
 
+#include <QMainWindow>
+
 #include <QProcess>
 #include <QDateTime>
 
@@ -66,7 +68,7 @@ class qjackctlDBusLogWatcher;
 //----------------------------------------------------------------------------
 // qjackctlMainForm -- UI wrapper form.
 
-class qjackctlMainForm : public QWidget
+class qjackctlMainForm : public QMainWindow
 {
 	Q_OBJECT
 
@@ -324,10 +326,15 @@ private:
 	QTime m_tResetLast;
 
 	qjackctlMessagesStatusForm *m_pMessagesStatusForm;
+	QDockWidget             *m_pMessagesStatusFormDock;
 	qjackctlSessionForm     *m_pSessionForm;
+	QDockWidget             *m_pSessionFormDock;
 	qjackctlConnectionsForm *m_pConnectionsForm;
+	QDockWidget             *m_pConnectionsFormDock;
 	qjackctlPatchbayForm    *m_pPatchbayForm;
+	QDockWidget             *m_pPatchbayFormDock;
 	qjackctlSetupForm       *m_pSetupForm;
+	QDockWidget             *m_pSetupFormDock;
 
 	qjackctlPatchbayRack *m_pPatchbayRack;
 
