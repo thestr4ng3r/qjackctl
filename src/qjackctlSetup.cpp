@@ -24,6 +24,7 @@
 
 #include <QComboBox>
 #include <QSplitter>
+#include <QMainWindow>
 #include <QList>
 
 #include <QTimer>
@@ -767,6 +768,33 @@ void qjackctlSetup::saveWidgetGeometry ( QWidget *pWidget, bool bVisible )
 	}
 }
 
+
+//---------------------------------------------------------------------------
+// MainWindow state persistence helper methods.
+
+void qjackctlSetup::loadMainWindowState(QMainWindow *pMainWindow)
+{
+	if (!pMainWindow)
+		return;
+
+	m_settings.beginGroup("/MainWindowState/" + pMainWindow->objectName());
+
+	const QByteArray &value = m_settings.value("/state").toByteArray();
+	if(!value.isEmpty())
+		pMainWindow->restoreState(value);
+
+	m_settings.endGroup();
+}
+
+void qjackctlSetup::saveMainWindowState(QMainWindow *pMainWindow)
+{
+	if (!pMainWindow)
+		return;
+
+	m_settings.beginGroup("/MainWindowState/" + pMainWindow->objectName());
+	m_settings.setValue("/state", pMainWindow->saveState());
+	m_settings.endGroup();
+}
 
 // end of qjackctlSetup.cpp
 

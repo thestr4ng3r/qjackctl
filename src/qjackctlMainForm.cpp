@@ -551,12 +551,14 @@ bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 	m_pMessagesStatusFormDock = new QDockWidget(this);
 	m_pMessagesStatusFormDock->setWidget(m_pMessagesStatusForm);
 	m_pMessagesStatusFormDock->setWindowTitle(m_pMessagesStatusForm->windowTitle());
+	m_pMessagesStatusFormDock->setObjectName(m_pMessagesStatusForm->objectName() + "Dock");
 	addDockWidget(Qt::BottomDockWidgetArea, m_pMessagesStatusFormDock);
 
 	m_pSessionForm        = new qjackctlSessionForm        (pParent, wflags);
 	m_pSessionFormDock = new QDockWidget(this);
 	m_pSessionFormDock->setWidget(m_pSessionForm);
 	m_pSessionFormDock->setWindowTitle(m_pSessionForm->windowTitle());
+	m_pSessionFormDock->setObjectName(m_pSessionForm->objectName() + "Dock");
 	//addDockWidget(Qt::BottomDockWidgetArea, m_pSessionFormDock);
 	tabifyDockWidget(m_pMessagesStatusFormDock, m_pSessionFormDock);
 
@@ -564,6 +566,7 @@ bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 	m_pConnectionsFormDock = new QDockWidget(this);
 	m_pConnectionsFormDock->setWidget(m_pConnectionsForm);
 	m_pConnectionsFormDock->setWindowTitle(m_pConnectionsForm->windowTitle());
+	m_pConnectionsFormDock->setObjectName(m_pConnectionsForm->objectName() + "Dock");
 	//addDockWidget(Qt::BottomDockWidgetArea, m_pConnectionsFormDock);
 	tabifyDockWidget(m_pMessagesStatusFormDock, m_pConnectionsFormDock);
 
@@ -571,6 +574,7 @@ bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 	m_pPatchbayFormDock = new QDockWidget(this);
 	m_pPatchbayFormDock->setWidget(m_pPatchbayForm);
 	m_pPatchbayFormDock->setWindowTitle(m_pPatchbayForm->windowTitle());
+	m_pPatchbayFormDock->setObjectName(m_pPatchbayForm->objectName() + "Dock");
 	//addDockWidget(Qt::BottomDockWidgetArea, m_pPatchbayFormDock);
 	tabifyDockWidget(m_pMessagesStatusFormDock, m_pPatchbayFormDock);
 
@@ -604,12 +608,13 @@ bool qjackctlMainForm::setup ( qjackctlSetup *pSetup )
 
 	// Try to restore old window positioning and appearence.
 	m_pSetup->loadWidgetGeometry(this, true);
+	m_pSetup->loadMainWindowState(this);
 
 	// And for the whole widget gallore...
-	m_pSetup->loadWidgetGeometry(m_pMessagesStatusForm);
-	m_pSetup->loadWidgetGeometry(m_pSessionForm);
-	m_pSetup->loadWidgetGeometry(m_pConnectionsForm);
-	m_pSetup->loadWidgetGeometry(m_pPatchbayForm);
+	//m_pSetup->loadWidgetGeometry(m_pMessagesStatusForm);
+	//m_pSetup->loadWidgetGeometry(m_pSessionForm);
+	//m_pSetup->loadWidgetGeometry(m_pConnectionsForm);
+	//m_pSetup->loadWidgetGeometry(m_pPatchbayForm);
 //	m_pSetup->loadWidgetGeometry(m_pSetupForm);
 
 	// Make it final show...
@@ -842,6 +847,7 @@ bool qjackctlMainForm::queryClose (void)
 	if (!m_bQuitClose && !m_bQuitForce && isVisible()
 		&& m_pSetup->bSystemTray && m_pSystemTray) {
 		m_pSetup->saveWidgetGeometry(this, true);
+		m_pSetup->saveMainWindowState(this);
 		if (m_pSetup->bSystemTrayQueryClose) {
 			const QString& sTitle
 				= tr("Information") + " - " QJACKCTL_SUBTITLE1;
@@ -959,6 +965,7 @@ bool qjackctlMainForm::queryClose (void)
 		m_pSetup->saveWidgetGeometry(m_pPatchbayForm);
 	//	m_pSetup->saveWidgetGeometry(m_pSetupForm);
 		m_pSetup->saveWidgetGeometry(this, true);
+		m_pSetup->saveMainWindowState(this);
 		// Close popup widgets.
 		if (m_pMessagesStatusForm)
 			m_pMessagesStatusForm->close();
@@ -3001,6 +3008,7 @@ void qjackctlMainForm::refreshPatchbay (void)
 void qjackctlMainForm::toggleMainForm (void)
 {
 	m_pSetup->saveWidgetGeometry(this, true);
+	m_pSetup->saveMainWindowState(this);
 
 	if (isVisible()) {
 	#ifdef CONFIG_SYSTEM_TRAY

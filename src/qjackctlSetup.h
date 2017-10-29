@@ -31,6 +31,7 @@
 class QWidget;
 class QComboBox;
 class QSplitter;
+class QMainWindow;
 
 
 // Audio mode combobox item indexes.
@@ -219,6 +220,11 @@ public:
 	// Widget geometry persistence helper prototypes.
 	void saveWidgetGeometry(QWidget *pWidget, bool bVisible = false);
 	void loadWidgetGeometry(QWidget *pWidget, bool bVisible = false);
+
+	// MainWindow state persistence helper prototypes.
+	void loadMainWindowState(QMainWindow *pMainWindow);
+	void saveMainWindowState(QMainWindow *pMainWindow);
+
 
 private:
 
