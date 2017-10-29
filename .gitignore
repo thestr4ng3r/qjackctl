@@ -16,3 +16,6 @@ qrc_*.cpp
 .obj
 .ui
 qjackctl
+.idea
+cmake-build-*
+build
